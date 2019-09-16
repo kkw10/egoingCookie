@@ -201,6 +201,26 @@ var app = http.createServer(function(request,response){
           response.end('Who are you?');
         }
       })
+    } else if(pathname === '/logout_process') {
+      let body = '';
+
+      request.on('data', function(data) {
+        body = body + data;
+      })
+
+      request.on('end', function() {
+        let post = qs.parse(body);
+          response.writeHead(302, {
+            'Set-Cookie': [
+              `email=; Max-Age=0`,
+              `password=; Max-Age=0`,
+              `nickname=; Max-Age=0`
+            ],
+            Location: '/'
+          })
+          response.end();
+        
+      })
 
     } else {
       response.writeHead(404);
